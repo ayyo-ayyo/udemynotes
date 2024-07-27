@@ -1,0 +1,25 @@
+{
+    "manifest_version": 3,
+    "name": "Udemy Notes",
+    "version": "1.0",
+    "description": "An extension that helps you take notes of udemy videos using AI",
+    "permissions": ["activeTab", "scripting"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "images/icon16.png",
+        "48": "images/icon48.png",
+        "128": "images/icon128.png"
+      }
+    },
+    "content_scripts": [
+      {
+        "matches": ["udemy.com/*"],
+        "js": ["content.js"]
+      }
+    ]
+  }
+  
