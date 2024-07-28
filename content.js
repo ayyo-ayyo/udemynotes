@@ -56,8 +56,17 @@ function getTranscript() {
   return transcriptionText;
 }
 
-function getNotes() {
-  //openAI api call
+// Function to get notes by sending the transcription text to OpenAI and receiving the response
+async function getNotes() {
+  const transcriptionText = getTranscript();
+  const prompt = "Please summarize the following video transcript and highlight the main topics to focus on: "; // This is a sample prompt. I'll decide on a better prompt later. 
+  const notes = await callOpenAI(transcriptionText, prompt);
+  
+  // Save the notes to a text file
+  createTXT(notes);
 }
 
 function createTXT() {}
+
+// Add event listener to the button in the Chrome extension UI
+document.getElementById('start-making-notes').addEventListener('click', getNotes);
