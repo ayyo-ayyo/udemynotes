@@ -1,3 +1,25 @@
+// Function to call OpenAI API and get the summarized notes
+async function callOpenAI(transcriptionText, prompt) {
+  const apiKey = 'your-openai-api-key'; // Replace with your OpenAI API key
+  const endpoint = 'https://api.openai.com/v1/engines/davinci-codex/completions'; // Adjust endpoint if needed
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      prompt: `${prompt}\n\n${transcriptionText}`,
+      max_tokens: 1500, // Adjust max_tokens based on your needs and OpenAI's limitations
+      temperature: 0.7, // Adjust temperature based on your needs
+    })
+  });
+
+  const data = await response.json();
+  return data.choices[0].text;
+}
+
 /** Helper function that clicks the transcript button on the video to get the 
     transription of the video to show
     *@return {void}
@@ -34,8 +56,27 @@ function getTranscript() {
   return transcriptionText;
 }
 
-function getNotes() {
-  //openAI api call
+// Function to get notes by sending the transcription text to OpenAI and receiving the response
+async function getNotes() {
+  const transcriptionText = getTranscript();
+  const prompt = "Please summarize the following video transcript and highlight the main topics to focus on: "; // This is a sample prompt. I'll decide on a better prompt later. 
+  const notes = await callOpenAI(transcriptionText, prompt);
+  
+  // Save the notes to a text file
+  createTXT(notes);
 }
 
-function createTXT() {}
+// Function to create and download a text file with the notes
+function createTXT(notes) {
+  const element = document.createElement('a');
+  const file = new Blob([notes], { type: 'text/plain' });
+  element.href = URL.createObjectURL(file);
+  element.download = 'notes.txt';
+  document.body.appendChild(element); 
+  element.click();
+  // Uncomment the prompt below for cleanup. It doesn't impact the overall function but might help with memory conservation )if needed).
+  //document.body.removeChild(element);
+}
+
+// Add event listener to the button in the Chrome extension UI
+document.getElementById('start-making-notes').addEventListener('click', getNotes);
