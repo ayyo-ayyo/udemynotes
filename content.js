@@ -100,7 +100,6 @@ function createTXT(notes) {
   element.download = "notes.txt";
   document.body.appendChild(element);
   element.click();
-  document.body.removeChild(element);
 }
 
 // Add event listener to the button in the Chrome extension UI
