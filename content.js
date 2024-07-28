@@ -41,12 +41,16 @@ async function callOpenAI(transcriptionText, prompt) {
     *@return {void}
     */
 function clickTranscriptionButton() {
-  var transcriptionButton = document.querySelector(
-    'button[data-purpose="transcript-toggle"]'
-  );
+    const transcriptionButton = document.querySelector(
+        'button[data-purpose="transcript-toggle"]'
+    );
 
-  console.log("button clicked");
-  transcriptionButton.click();
+    if (transcriptionButton) {
+        console.log("button clicked");
+        transcriptionButton.click();
+    } else {
+        console.error('Transcription button not found.');
+    }
 }
 
 /**  Grab all the text in the transcription of the video and store it in a string
