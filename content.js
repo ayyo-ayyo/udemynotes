@@ -66,7 +66,17 @@ async function getNotes() {
   createTXT(notes);
 }
 
-function createTXT() {}
+// Function to create and download a text file with the notes
+function createTXT(notes) {
+  const element = document.createElement('a');
+  const file = new Blob([notes], { type: 'text/plain' });
+  element.href = URL.createObjectURL(file);
+  element.download = 'notes.txt';
+  document.body.appendChild(element); 
+  element.click();
+  // Uncomment the prompt below for cleanup. It doesn't impact the overall function but might help with memory conservation )if needed).
+  //document.body.removeChild(element);
+}
 
 // Add event listener to the button in the Chrome extension UI
 document.getElementById('start-making-notes').addEventListener('click', getNotes);
