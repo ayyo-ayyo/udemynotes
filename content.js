@@ -76,7 +76,7 @@ function getTranscript() {
 
 // Function to get notes by sending the transcription text to OpenAI and receiving the response
 async function getNotes() {
-  const transcriptionText = getTranscript();
+  const transcriptionText = await getTranscript();
   if (!transcriptionText) {
     console.error('No transcription text available.');
     return;
