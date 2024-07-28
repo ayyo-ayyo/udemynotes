@@ -1,6 +1,8 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 // Function to call OpenAI API and get the summarized notes
 async function callOpenAI(transcriptionText, prompt) {
-  const apiKey = 'your-openai-api-key'; // Replace with your OpenAI API key
+  const apiKey = process.env.OPENAI_API_KEY;
   const endpoint = 'https://api.openai.com/v1/engines/davinci-codex/completions'; // Adjust endpoint if needed
 
   const response = await fetch(endpoint, {
