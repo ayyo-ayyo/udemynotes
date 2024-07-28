@@ -100,8 +100,7 @@ function createTXT(notes) {
   element.download = "notes.txt";
   document.body.appendChild(element);
   element.click();
-  // Uncomment the prompt below for cleanup. It doesn't impact the overall function but might help with memory conservation )if needed).
-  //document.body.removeChild(element);
+  document.body.removeChild(element);
 }
 
 // Add event listener to the button in the Chrome extension UI
