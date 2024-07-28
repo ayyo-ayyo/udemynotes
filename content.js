@@ -1,10 +1,22 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
+// import * as dotenv from 'dotenv';
+// dotenv.config();
+
+// content.js
+let Prompt = "";
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.greeting !== null) {
+    Prompt = request.greeting;
+    getNotes();
+    sendResponse({ farewell: 'goodbye from content script' });
+  }
+});
+
 // Function to call OpenAI API and get the summarized notes
 async function callOpenAI(transcriptionText, prompt) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  const endpoint = 'https://api.openai.com/v1/engines/davinci-codex/completions'; // Adjust endpoint if needed
+  const apiKey = "";
+  const endpoint = 'https://api.openai.com/v1/chat/completions'
 
+console.log("calling OpenAI API");
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
@@ -12,14 +24,15 @@ async function callOpenAI(transcriptionText, prompt) {
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      prompt: `${prompt}\n\n${transcriptionText}`,
+      model: "gpt-4o-mini",
+      messages: [{ role: "system", content: prompt}, { role: "user", content: transcriptionText}],
       max_tokens: 1500, // Adjust max_tokens based on your needs and OpenAI's limitations
       temperature: 0.7, // Adjust temperature based on your needs
     }),
   });
 
   const data = await response.json();
-  return data.choices[0].text;
+  return data.choices[0].message.content;
 }
 
 /** Helper function that clicks the transcript button on the video to get the 
@@ -68,7 +81,7 @@ async function getNotes() {
     return;
   }
 
-  const promptInput = document.getElementById('prompt').value.trim();
+  const promptInput = Prompt.trim();
   const basePrompt = "Please provide a detailed summary of the following video transcript. Neatly arrange the content into different sections or topics of the course with proper formatting. If applicable, focus on the following specific topic: ";
   const promptText = basePrompt + promptInput;
   
@@ -91,6 +104,7 @@ function createTXT(notes) {
 }
 
 // Add event listener to the button in the Chrome extension UI
-document
-  .getElementById("submit")
-  .addEventListener("click", getNotes);
+
+// document
+//   .getElementById("submitButton")
+//   .addEventListener("click", getNotes);
