@@ -3,7 +3,7 @@
   "name": "Udemy Notes",
   "version": "1.0",
   "description": "An extension that helps you take notes of udemy videos using AI",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "action": {
     "default_popup": "popup.html"
   },
