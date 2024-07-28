@@ -6,16 +6,16 @@ async function callOpenAI(transcriptionText, prompt) {
   const endpoint = 'https://api.openai.com/v1/engines/davinci-codex/completions'; // Adjust endpoint if needed
 
   const response = await fetch(endpoint, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
       prompt: `${prompt}\n\n${transcriptionText}`,
       max_tokens: 1500, // Adjust max_tokens based on your needs and OpenAI's limitations
       temperature: 0.7, // Adjust temperature based on your needs
-    })
+    }),
   });
 
   const data = await response.json();
@@ -31,6 +31,7 @@ function clickTranscriptionButton() {
     'button[data-purpose="transcript-toggle"]'
   );
 
+  console.log("button clicked");
   transcriptionButton.click();
 }
 
@@ -39,6 +40,7 @@ function clickTranscriptionButton() {
  */
 function getTranscript() {
   //variable to store the transcription text for the video
+  console.log("Tried to get transcript");
   var transcriptionText = "";
   clickTranscriptionButton();
 
@@ -61,24 +63,27 @@ function getTranscript() {
 // Function to get notes by sending the transcription text to OpenAI and receiving the response
 async function getNotes() {
   const transcriptionText = getTranscript();
-  const prompt = "Please summarize the following video transcript and highlight the main topics to focus on: "; // This is a sample prompt. I'll decide on a better prompt later. 
+  const prompt =
+    "Please summarize the following video transcript and highlight the main topics to focus on: "; // This is a sample prompt. I'll decide on a better prompt later.
   const notes = await callOpenAI(transcriptionText, prompt);
-  
+
   // Save the notes to a text file
   createTXT(notes);
 }
 
 // Function to create and download a text file with the notes
 function createTXT(notes) {
-  const element = document.createElement('a');
-  const file = new Blob([notes], { type: 'text/plain' });
+  const element = document.createElement("a");
+  const file = new Blob([notes], { type: "text/plain" });
   element.href = URL.createObjectURL(file);
-  element.download = 'notes.txt';
-  document.body.appendChild(element); 
+  element.download = "notes.txt";
+  document.body.appendChild(element);
   element.click();
   // Uncomment the prompt below for cleanup. It doesn't impact the overall function but might help with memory conservation )if needed).
   //document.body.removeChild(element);
 }
 
 // Add event listener to the button in the Chrome extension UI
-document.getElementById('start-making-notes').addEventListener('click', getNotes);
+document
+  .getElementById("submit")
+  .addEventListener("click", getNotes);
