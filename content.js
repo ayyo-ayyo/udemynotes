@@ -68,8 +68,9 @@ async function getNotes() {
     return;
   }
 
-  const promptInput = document.getElementById('prompt');
-  const promptText = promptInput.value.trim() || "Please summarize the following video transcript and highlight the main topics to focus on:"; // Default prompt if none is provided
+  const promptInput = document.getElementById('prompt').value.trim();
+  const basePrompt = "Please provide a detailed summary of the following video transcript. Neatly arrange the content into different sections or topics of the course with proper formatting. If applicable, focus on the following specific topic: ";
+  const promptText = basePrompt + promptInput;
   
   const notes = await callOpenAI(transcriptionText, promptText);
 
