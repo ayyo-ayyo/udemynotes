@@ -63,9 +63,15 @@ function getTranscript() {
 // Function to get notes by sending the transcription text to OpenAI and receiving the response
 async function getNotes() {
   const transcriptionText = getTranscript();
-  const prompt =
-    "Please summarize the following video transcript and highlight the main topics to focus on: "; // This is a sample prompt. I'll decide on a better prompt later.
-  const notes = await callOpenAI(transcriptionText, prompt);
+  if (!transcriptionText) {
+    console.error('No transcription text available.');
+    return;
+  }
+
+  const promptInput = document.getElementById('prompt');
+  const promptText = promptInput.value.trim() || "Please summarize the following video transcript and highlight the main topics to focus on:"; // Default prompt if none is provided
+  
+  const notes = await callOpenAI(transcriptionText, promptText);
 
   // Save the notes to a text file
   createTXT(notes);
