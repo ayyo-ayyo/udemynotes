@@ -30,7 +30,7 @@ async function callOpenAI(transcriptionText, prompt) {
 
     const data = await response.json();
     return data.choices[0].message.content.trim();
-  } catch (error) {
+} catch (error) {
     console.error('Error calling OpenAI API:', error);
     return 'Error fetching notes from OpenAI API.';
   }
