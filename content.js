@@ -19,9 +19,9 @@ function getTranscript() {
   clickTranscriptionButton();
 
   /* Extract all lines of text in the transcription by getting all elements 
-    in the page with data-purpose equals cue-text and put them into an array */    
-  var transcriptionLines = document.querySelectorAll(
-    'span[data-purpose="cue-text"]'
+    in the page with data-purpose equals cue-text and put them into an array */
+  var transcriptionLines = Array.from(
+    document.querySelectorAll('span[data-purpose="cue-text"]')
   );
 
   /* Compile all the lines of text in the transcription by looping through 
