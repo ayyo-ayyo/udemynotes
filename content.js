@@ -84,5 +84,5 @@ function createTXT(notes) {
 
 // Add event listener to the button in the Chrome extension UI
 document
-  .getElementById("start-making-notes")
+  .getElementById("submit")
   .addEventListener("click", getNotes);
