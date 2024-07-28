@@ -1,3 +1,25 @@
+// Function to call OpenAI API and get the summarized notes
+async function callOpenAI(transcriptionText, prompt) {
+  const apiKey = 'your-openai-api-key'; // Replace with your OpenAI API key
+  const endpoint = 'https://api.openai.com/v1/engines/davinci-codex/completions'; // Adjust endpoint if needed
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      prompt: `${prompt}\n\n${transcriptionText}`,
+      max_tokens: 1500, // Adjust max_tokens based on your needs and OpenAI's limitations
+      temperature: 0.7, // Adjust temperature based on your needs
+    })
+  });
+
+  const data = await response.json();
+  return data.choices[0].text;
+}
+
 /** Helper function that clicks the transcript button on the video to get the 
     transription of the video to show
     *@return {void}
