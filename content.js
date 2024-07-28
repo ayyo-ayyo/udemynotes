@@ -56,27 +56,32 @@ function clickTranscriptionButton() {
 /**  Grab all the text in the transcription of the video and store it in a string
  *@return {string}
  */
-function getTranscript() {
-  //variable to store the transcription text for the video
-  console.log("Tried to get transcript");
-  var transcriptionText = "";
-  clickTranscriptionButton();
+async function getTranscript() {
+    //variable to store the transcription text for the video
+    console.log("Tried to get transcript");
+    let transcriptionText = "";
+    clickTranscriptionButton();
 
-  /* Extract all lines of text in the transcription by getting all elements 
+    // Wait for the transcript to be visible/loaded
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Adjust delay as needed
+    
+    /* Extract all lines of text in the transcription by getting all elements 
     in the page with data-purpose equals cue-text and put them into an array */
-  var transcriptionLines = Array.from(
-    document.querySelectorAll('span[data-purpose="cue-text"]')
-  );
+    const transcriptionLines = Array.from(
+        document.querySelectorAll('span[data-purpose="cue-text"]')
+    );
 
-  /* Compile all the lines of text in the transcription by looping through 
-    all the span elemenets contained in the transcriptionLines variable and 
-    appending them to the transcriptionText string */
-  transcriptionLines.forEach((elem) => {
-    transcriptionText += elem.textContent + " ";
-  });
+    
+    if (transcriptionLines.length === 0) {
+        console.error('No transcription lines found.');
+        return "";
+    }
 
-  return transcriptionText;
-}
+    transcriptionLines.forEach((elem) => {
+        transcriptionText += elem.textContent + " ";
+    });
+
+    return transcriptionText.trim();
 
 // Function to get notes by sending the transcription text to OpenAI and receiving the response
 async function getNotes() {
